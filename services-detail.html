@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Services — NarrativeOS™</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: '#1a3c6e',
+            'navy-dark': '#0f2444',
+            'navy-deeper': '#081830',
+            gold: '#c9a84c',
+            'gold-light': '#e2c068',
+            'gold-dark': '#a8883a',
+            'light-gray': '#f4f6f9',
+          },
+          fontFamily: { inter: ['Inter', 'sans-serif'] },
+        },
+      },
+    };
+  </script>
+  <style>
+    * { font-family: 'Inter', sans-serif; }
+    html { scroll-behavior: smooth; }
+
+    .hero-gradient { background: linear-gradient(135deg, #081830 0%, #0f2444 40%, #1a3c6e 70%, #1e4a8a 100%); }
+
+    .gold-text {
+      background: linear-gradient(135deg, #c9a84c, #e2c068, #c9a84c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .glass-card-light {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 8px 32px rgba(26, 60, 110, 0.07);
+    }
+
+    .reveal { opacity: 0; transform: translateY(36px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
+    nav { transition: background 0.3s, box-shadow 0.3s; }
+    nav.scrolled { background: rgba(8, 24, 48, 0.97) !important; box-shadow: 0 2px 20px rgba(0,0,0,0.3); }
+
+    .btn-gold {
+      background: linear-gradient(135deg, #c9a84c, #e2c068);
+      color: #0f2444;
+      font-weight: 700;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(201, 168, 76, 0.3);
+    }
+    .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(201, 168, 76, 0.4); }
+
+    .btn-outline {
+      border: 2px solid rgba(201, 168, 76, 0.6);
+      color: #e2c068;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+    .btn-outline:hover { border-color: #c9a84c; background: rgba(201, 168, 76, 0.1); transform: translateY(-2px); }
+
+    .service-card {
+      border: 1px solid rgba(26, 60, 110, 0.08);
+      background: white;
+      transition: all 0.3s;
+    }
+    .service-card:hover { box-shadow: 0 16px 40px rgba(26, 60, 110, 0.12); transform: translateY(-2px); border-color: rgba(201, 168, 76, 0.3); }
+
+    .pricing-card { transition: all 0.3s; }
+    .pricing-popular { border: 2px solid #c9a84c; transform: scale(1.03); box-shadow: 0 20px 60px rgba(201, 168, 76, 0.15); }
+
+    .check-item::before { content: ''; display: inline-block; width: 16px; height: 16px; border-radius: 50%; background: rgba(201, 168, 76, 0.15); flex-shrink: 0; }
+
+    .section-divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(26, 60, 110, 0.12), transparent); }
+
+    .faq-item details summary { cursor: pointer; list-style: none; }
+    .faq-item details summary::-webkit-details-marker { display: none; }
+    .faq-item details[open] summary .faq-icon { transform: rotate(45deg); }
+    .faq-icon { transition: transform 0.2s; }
+
+    /* Mobile menu */
+    #mobile-menu { transition: max-height 0.3s ease, opacity 0.3s ease; max-height: 0; opacity: 0; overflow: hidden; }
+    #mobile-menu.open { max-height: 400px; opacity: 1; }
+
+    input:focus, textarea:focus, select:focus { outline: none; border-color: #c9a84c; box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.15); }
+  </style>
+</head>
+<body class="bg-white text-gray-900 antialiased">
+
+  <!-- NAV -->
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-transparent px-6 py-4">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="8" fill="#c9a84c"/>
+          <text x="16" y="22" text-anchor="middle" font-family="Inter" font-weight="900" font-size="14" fill="#0f2444">N</text>
+        </svg>
+        <span class="text-white font-bold text-xl tracking-tight">NarrativeOS<span style="color:#c9a84c;">™</span></span>
+      </a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="index.html#solution" class="text-white/70 hover:text-white text-sm font-medium transition-colors">Solution</a>
+        <a href="#services-list" class="text-white/70 hover:text-white text-sm font-medium transition-colors">Services</a>
+        <a href="#pricing" class="text-white/70 hover:text-white text-sm font-medium transition-colors">Pricing</a>
+        <a href="#process" class="text-white/70 hover:text-white text-sm font-medium transition-colors">Process</a>
+        <a href="index.html#contact" class="btn-gold px-5 py-2 rounded-full text-sm inline-block">Get Started</a>
+      </div>
+      <button id="menu-toggle" class="md:hidden text-white focus:outline-none">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div id="mobile-menu" class="md:hidden">
+      <div class="max-w-7xl mx-auto pt-4 pb-2 flex flex-col gap-3">
+        <a href="#services-list" class="text-white/80 hover:text-white text-sm font-medium py-2 border-b border-white/10">Services</a>
+        <a href="#pricing" class="text-white/80 hover:text-white text-sm font-medium py-2 border-b border-white/10">Pricing</a>
+        <a href="#process" class="text-white/80 hover:text-white text-sm font-medium py-2 border-b border-white/10">Process</a>
+        <a href="index.html#contact" class="btn-gold px-5 py-2.5 rounded-full text-sm text-center mt-2">Get Started</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero-gradient pt-40 pb-24 relative overflow-hidden">
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+      <svg width="100%" height="100%" viewBox="0 0 1440 500" preserveAspectRatio="xMidYMid slice" fill="none">
+        <circle cx="1300" cy="100" r="250" stroke="rgba(201,168,76,0.06)" stroke-width="1" fill="none"/>
+        <circle cx="1300" cy="100" r="160" stroke="rgba(201,168,76,0.04)" stroke-width="1" fill="none"/>
+        <line x1="0" y1="500" x2="500" y2="0" stroke="rgba(201,168,76,0.05)" stroke-width="1"/>
+        <line x1="200" y1="500" x2="700" y2="0" stroke="rgba(201,168,76,0.03)" stroke-width="1"/>
+      </svg>
+    </div>
+    <div class="max-w-5xl mx-auto px-6 text-center relative z-10">
+      <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur rounded-full px-4 py-1.5 mb-6 border border-white/15">
+        <span class="w-2 h-2 rounded-full bg-gold animate-pulse"></span>
+        <span class="text-white/80 text-xs font-medium tracking-widest uppercase">12+ Specialized Services</span>
+      </div>
+      <h1 class="text-4xl md:text-6xl font-black text-white leading-tight mb-6">
+        Every service your reputation<br/>
+        <span class="gold-text">could ever need.</span>
+      </h1>
+      <p class="text-white/65 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
+        From emergency content removal to long-term brand engineering — NarrativeOS™ offers the most comprehensive reputation management suite in the industry.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="#pricing" class="btn-gold px-8 py-4 rounded-full text-base inline-block">View Pricing →</a>
+        <a href="#services-list" class="btn-outline px-8 py-4 rounded-full text-base inline-block">Browse Services</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICE CATEGORY NAV -->
+  <div class="bg-white border-b border-gray-100 sticky top-16 z-40">
+    <div class="max-w-7xl mx-auto px-6 overflow-x-auto">
+      <div class="flex gap-1 py-3" style="min-width:max-content;">
+        <a href="#core-services" class="px-4 py-2 rounded-full text-sm font-medium text-gray-500 hover:text-navy hover:bg-navy/5 transition-all whitespace-nowrap">Core Services</a>
+        <a href="#executive-services" class="px-4 py-2 rounded-full text-sm font-medium text-gray-500 hover:text-navy hover:bg-navy/5 transition-all whitespace-nowrap">Executive & Public Co.</a>
+        <a href="#protection-services" class="px-4 py-2 rounded-full text-sm font-medium text-gray-500 hover:text-navy hover:bg-navy/5 transition-all whitespace-nowrap">Protection & Defense</a>
+        <a href="#content-services" class="px-4 py-2 rounded-full text-sm font-medium text-gray-500 hover:text-navy hover:bg-navy/5 transition-all whitespace-nowrap">Content & Authority</a>
+        <a href="#pricing" class="px-4 py-2 rounded-full text-sm font-medium text-gold border border-gold/30 whitespace-nowrap">Pricing</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ CORE SERVICES ═══ -->
+  <section id="core-services" class="py-20 bg-light-gray" style="--light-gray: #f4f6f9;">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="mb-12 reveal">
+        <span class="text-gold font-semibold text-sm tracking-widest uppercase">Core Services</span>
+        <h2 class="text-3xl md:text-4xl font-black text-navy mt-2 mb-3">The Remove → Build → Protect system.</h2>
+        <p class="text-gray-500 max-w-2xl">Our foundational three-phase methodology forms the backbone of every NarrativeOS™ engagement. Delivered individually or as a full-stack system.</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-6" id="services-list">
+
+        <!-- REMOVE -->
+        <div class="service-card rounded-2xl p-8 reveal reveal-delay-1">
+          <div class="w-14 h-14 rounded-2xl bg-navy flex items-center justify-center mb-6">
+            <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+              <path d="M5 5l16 16M21 5L5 21" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="inline-flex items-center gap-2 bg-red-50 border border-red-100 rounded-full px-3 py-1 mb-4">
+            <span class="text-red-600 text-xs font-bold uppercase tracking-wide">Phase 01</span>
+          </div>
+          <h3 class="text-2xl font-bold text-navy mb-3">Content Removal</h3>
+          <p class="text-gray-500 leading-relaxed mb-6">We eliminate negative content at the source through multiple enforcement pathways — search engine delisting, DMCA takedown filings, direct platform removal requests, and legal escalation when necessary. Our removal success rate exceeds 90% on actionable content.</p>
+          <div class="space-y-2 mb-6">
+            <div class="flex items-center gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Google, Bing & Yahoo delisting requests</div>
+            <div class="flex items-center gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>DMCA takedown filings (copyright & defamation)</div>
+            <div class="flex items-center gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Direct platform removal (Reddit, news sites, blogs)</div>
+            <div class="flex items-center gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Cease & desist letter preparation</div>
+            <div class="flex items-center gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Mugshot & arrest record suppression</div>
+            <div class="flex items-center gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>GDPR / "Right to be Forgotten" filings (EU)</div>
+          </div>
+          <div class="bg-navy/5 rounded-xl p-4">
+            <p class="text-xs text-gray-500"><span class="font-semibold text-navy">Timeline:</span> Initial results in 30–90 days depending on platform and content type.</p>
+          </div>
+        </div>
+
+        <!-- BUILD -->
+        <div class="service-card rounded-2xl p-8 reveal reveal-delay-2 border-2" style="border-color: #c9a84c;">
+          <div class="w-14 h-14 rounded-2xl bg-gold flex items-center justify-center mb-6">
+            <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+              <path d="M13 3v20M3 13h20" stroke="#0f2444" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="inline-flex items-center gap-2 bg-gold/10 border border-gold/30 rounded-full px-3 py-1 mb-4">
+            <span class="text-gold-dark text-xs font-bold uppercase tracking-wide">Phase 02 · Most Popular</span>
+          </div>
+          <h3 class="text-2xl font-bold text-navy mb-3">Content Building & SEO</h3>
+          <p class="text-gray-500 leading-relaxed mb-6">We flood the internet with high-quality, authoritative content that ranks above negative results — pushing your best story to the top of every search. Our AI content engine produces professional-grade articles, press releases, and profiles at scale.</p>
+          <div class="space-y-2 mb-6">
+            <div class="flex items-center gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>SEO-optimized articles published to 50+ sites</div>
+            <div class="flex items-center gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Authority profile creation (Crunchbase, About.me, etc.)</div>
+            <div class="flex items-center gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Press release drafting & distribution</div>
+            <div class="flex items-center gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Social media management (LinkedIn, X, Instagram)</div>
+            <div class="flex items-center gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Authority backlink building</div>
+            <div class="flex items-center gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Thought leadership ghostwriting</div>
+          </div>
+          <div class="bg-gold/5 rounded-xl p-4 border border-gold/20">
+            <p class="text-xs text-gray-600"><span class="font-semibold text-navy">Timeline:</span> First SERP improvements visible in 45–90 days. Full suppression in 3–6 months.</p>
+          </div>
+        </div>
+
+        <!-- PROTECT -->
+        <div class="service-card rounded-2xl p-8 reveal reveal-delay-3">
+          <div class="w-14 h-14 rounded-2xl bg-navy flex items-center justify-center mb-6">
+            <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+              <path d="M13 2l9 4v7c0 5-4 9-9 11C8 22 4 18 4 13V6l9-4z" stroke="#c9a84c" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+              <path d="M9 13l3 3 5-5" stroke="#c9a84c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 rounded-full px-3 py-1 mb-4">
+            <span class="text-blue-600 text-xs font-bold uppercase tracking-wide">Phase 03</span>
+          </div>
+          <h3 class="text-2xl font-bold text-navy mb-3">Ongoing Monitoring & Defense</h3>
+          <p class="text-gray-500 leading-relaxed mb-6">We monitor your digital presence 24/7 and defend your reputation proactively — catching threats before they become crises, maintaining your search gains, and keeping you ahead of the next attack.</p>
+          <div class="space-y-2 mb-6">
+            <div class="flex items-center gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>24/7 AI-powered reputation monitoring</div>
+            <div class="flex items-center gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Real-time threat alerts (SMS + email)</div>
+            <div class="flex items-center gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Monthly SERP & brand health reports</div>
+            <div class="flex items-center gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Negative content suppression maintenance</div>
+            <div class="flex items-center gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>New threat neutralization within 24 hours</div>
+            <div class="flex items-center gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Client dashboard with live reputation score</div>
+          </div>
+          <div class="bg-navy/5 rounded-xl p-4">
+            <p class="text-xs text-gray-500"><span class="font-semibold text-navy">Ongoing:</span> Active protection continues monthly. Cancel anytime — no lock-in contracts.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ═══ EXECUTIVE & PUBLIC COMPANY SERVICES ═══ -->
+  <section id="executive-services" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="mb-12 reveal">
+        <span class="text-gold font-semibold text-sm tracking-widest uppercase">Executive & Public Company</span>
+        <h2 class="text-3xl md:text-4xl font-black text-navy mt-2 mb-3">Built for the boardroom.</h2>
+        <p class="text-gray-500 max-w-2xl">Specialized services for executives, founders, and publicly-traded companies facing the scrutiny of capital markets, media, and the general public.</p>
+      </div>
+      <div class="grid md:grid-cols-2 gap-8">
+
+        <!-- Executive Digital Presence -->
+        <div class="service-card rounded-2xl p-8 reveal reveal-delay-1">
+          <div class="flex items-start gap-5 mb-6">
+            <div class="w-14 h-14 rounded-2xl bg-navy/6 flex items-center justify-center flex-shrink-0">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="9" r="5" stroke="#1a3c6e" stroke-width="1.5" fill="none"/><path d="M4 24c0-5.5 4.5-10 10-10s10 4.5 10 10" stroke="#1a3c6e" stroke-width="1.5" stroke-linecap="round" fill="none"/><path d="M19 7l2 2-2 2" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-navy mb-1">Executive Digital Presence Package</h3>
+              <span class="text-xs bg-gold/10 text-gold-dark border border-gold/25 rounded-full px-3 py-0.5 font-semibold uppercase tracking-wide">High Demand</span>
+            </div>
+          </div>
+          <p class="text-gray-500 leading-relaxed mb-6">Transform your online footprint into a commanding executive brand. We optimize every digital touchpoint — from LinkedIn to speaking profiles — to position you as the authority in your space. Ideal for C-suite executives, board members, fund managers, and public company leadership.</p>
+          <div class="grid grid-cols-2 gap-2 mb-6">
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>LinkedIn profile optimization</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Executive bio (3 lengths)</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Board & director profiles</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Speaker positioning page</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Thought leadership content plan</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Monthly LinkedIn posts (ghostwritten)</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Crunchbase & Wikipedia strategy</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Media bio optimization</div>
+          </div>
+          <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+            <span class="text-navy font-bold">From <span class="text-2xl">$2,500</span>/mo</span>
+            <a href="index.html#contact" class="btn-gold px-5 py-2 rounded-full text-sm">Get Started</a>
+          </div>
+        </div>
+
+        <!-- Pre-IPO Reputation Cleanup -->
+        <div class="service-card rounded-2xl p-8 reveal reveal-delay-2">
+          <div class="flex items-start gap-5 mb-6">
+            <div class="w-14 h-14 rounded-2xl bg-navy/6 flex items-center justify-center flex-shrink-0">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 3l2.5 5.5L22 9.5l-4 4 1 5.5L14 16.5 9 19l1-5.5-4-4 5.5-1L14 3z" stroke="#c9a84c" stroke-width="1.5" fill="none" stroke-linejoin="round"/><path d="M4 24h20" stroke="#1a3c6e" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-navy mb-1">Pre-IPO Reputation Cleanup</h3>
+              <span class="text-xs bg-navy/8 text-navy rounded-full px-3 py-0.5 font-semibold uppercase tracking-wide">Capital Markets</span>
+            </div>
+          </div>
+          <p class="text-gray-500 leading-relaxed mb-6">Public markets apply intense scrutiny to leadership teams and company histories. NarrativeOS™ prepares executives and companies for the digital due diligence that comes with IPOs, uplistings, PIPE deals, and institutional fundraising — ensuring your search footprint reflects strength, not liability.</p>
+          <div class="grid grid-cols-2 gap-2 mb-6">
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Full SERP audit (executives + company)</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Negative content suppression blitz</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Roadshow-ready search profiles</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Investor-facing narrative alignment</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>SEC-compliant communications review</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Analyst & media profile building</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Data broker removal for executives</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>News &amp; press article campaign</div>
+          </div>
+          <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+            <span class="text-navy font-bold">From <span class="text-2xl">$10,000</span> project</span>
+            <a href="index.html#contact" class="btn-gold px-5 py-2 rounded-full text-sm">Get a Quote</a>
+          </div>
+        </div>
+
+        <!-- Corporate Reputation Management -->
+        <div class="service-card rounded-2xl p-8 reveal reveal-delay-1">
+          <div class="flex items-start gap-5 mb-6">
+            <div class="w-14 h-14 rounded-2xl bg-navy/6 flex items-center justify-center flex-shrink-0">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="3" y="10" width="22" height="15" rx="2" stroke="#1a3c6e" stroke-width="1.5" fill="none"/><path d="M9 10V7a5 5 0 0110 0v3" stroke="#1a3c6e" stroke-width="1.5" stroke-linecap="round" fill="none"/><path d="M14 17v2" stroke="#c9a84c" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-navy mb-1">Corporate Reputation Management</h3>
+              <span class="text-xs bg-blue-50 text-blue-700 border border-blue-100 rounded-full px-3 py-0.5 font-semibold uppercase tracking-wide">Enterprise</span>
+            </div>
+          </div>
+          <p class="text-gray-500 leading-relaxed mb-6">Your brand reputation drives hiring, partnerships, sales, and investor confidence. NarrativeOS™ delivers full-spectrum corporate reputation management — protecting your brand identity, managing review platforms, and building the trust signals that move enterprise deals forward.</p>
+          <div class="grid grid-cols-2 gap-2 mb-6">
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Brand SERP domination strategy</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Glassdoor & review platform management</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Corporate news & PR content engine</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Employer brand management</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Competitive reputation benchmarking</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Executive team profile building</div>
+          </div>
+          <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+            <span class="text-navy font-bold">From <span class="text-2xl">$8,000</span>/mo</span>
+            <a href="index.html#contact" class="btn-gold px-5 py-2 rounded-full text-sm">Contact Sales</a>
+          </div>
+        </div>
+
+        <!-- Crisis PR -->
+        <div class="service-card rounded-2xl p-8 reveal reveal-delay-2">
+          <div class="flex items-start gap-5 mb-6">
+            <div class="w-14 h-14 rounded-2xl bg-navy/6 flex items-center justify-center flex-shrink-0">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="11" stroke="#c9a84c" stroke-width="1.5" fill="none"/><path d="M14 8v7" stroke="#1a3c6e" stroke-width="2" stroke-linecap="round"/><circle cx="14" cy="19" r="1.5" fill="#c9a84c"/></svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-navy mb-1">Crisis PR Rapid Response</h3>
+              <span class="text-xs bg-red-50 text-red-600 border border-red-100 rounded-full px-3 py-0.5 font-semibold uppercase tracking-wide">24/7 Available</span>
+            </div>
+          </div>
+          <p class="text-gray-500 leading-relaxed mb-6">When a reputation crisis breaks — a viral article, social media pile-on, short-seller attack, or breaking news story — every hour without a response makes it worse. Our crisis response team deploys same-day to neutralize the threat and protect your narrative before it spirals.</p>
+          <div class="grid grid-cols-2 gap-2 mb-6">
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>24/7 crisis hotline activation</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Same-day response strategy</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Official statement drafting</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Counter-narrative content deployment</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Social media crisis management</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Media outreach & correction requests</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Post-crisis recovery plan</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Legal team coordination support</div>
+          </div>
+          <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+            <span class="text-navy font-bold">From <span class="text-2xl">$5,000</span> retainer</span>
+            <a href="index.html#contact" class="btn-gold px-5 py-2 rounded-full text-sm">Activate Now</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ═══ PROTECTION & DEFENSE ═══ -->
+  <section id="protection-services" class="py-20 bg-light-gray">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="mb-12 reveal">
+        <span class="text-gold font-semibold text-sm tracking-widest uppercase">Protection & Defense</span>
+        <h2 class="text-3xl md:text-4xl font-black text-navy mt-2 mb-3">Defense-first reputation security.</h2>
+        <p class="text-gray-500 max-w-2xl">Advanced protective services that guard your digital identity, personal data, and brand integrity against modern threats — including the emerging risk of AI-generated disinformation.</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-6">
+
+        <!-- LLM Hallucination Defense -->
+        <div class="service-card rounded-2xl p-8 reveal reveal-delay-1">
+          <div class="w-12 h-12 rounded-2xl bg-navy/6 flex items-center justify-center mb-5">
+            <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><rect x="3" y="5" width="20" height="16" rx="3" stroke="#1a3c6e" stroke-width="1.5" fill="none"/><path d="M8 12h10M8 16h7" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round"/><circle cx="22" cy="6" r="4" fill="#c9a84c"/><path d="M20.5 6l1 1 2-2" stroke="white" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="inline-flex items-center gap-1.5 bg-purple-50 border border-purple-100 rounded-full px-3 py-0.5 mb-4">
+            <span class="text-purple-700 text-xs font-bold uppercase tracking-wide">New Service</span>
+          </div>
+          <h3 class="text-lg font-bold text-navy mb-2">LLM Hallucination Defense</h3>
+          <p class="text-gray-500 text-sm leading-relaxed mb-5">AI systems including ChatGPT, Perplexity, and Google AI Overviews regularly produce false, damaging information about real people and companies. We monitor AI outputs and deploy authoritative source content to correct the record before it spreads.</p>
+          <ul class="space-y-2 mb-6">
+            <li class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>AI output monitoring across 6+ platforms</li>
+            <li class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Source correction & authoritative injection</li>
+            <li class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Wikipedia & structured data optimization</li>
+            <li class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Monthly AI hallucination audit report</li>
+            <li class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Schema markup & entity optimization</li>
+          </ul>
+          <div class="pt-4 border-t border-gray-100 flex items-center justify-between">
+            <span class="text-navy font-bold">$1,500<span class="text-gray-400 text-sm">/mo add-on</span></span>
+            <a href="index.html#contact" class="text-gold text-sm font-semibold hover:underline">Learn more →</a>
+          </div>
+        </div>
+
+        <!-- Dark Web Monitoring -->
+        <div class="service-card rounded-2xl p-8 reveal reveal-delay-2">
+          <div class="w-12 h-12 rounded-2xl bg-navy/6 flex items-center justify-center mb-5">
+            <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 3C7.5 3 3 7.5 3 13s4.5 10 10 10 10-4.5 10-10S18.5 3 13 3z" stroke="#1a3c6e" stroke-width="1.5" fill="none"/><path d="M3 13h20" stroke="#1a3c6e" stroke-width="1.5" stroke-linecap="round"/><path d="M13 3c-3 3-4 6-4 10s1 7 4 10" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round" fill="none"/><path d="M13 3c3 3 4 6 4 10s-1 7-4 10" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
+          </div>
+          <h3 class="text-lg font-bold text-navy mb-2">Dark Web Monitoring</h3>
+          <p class="text-gray-500 text-sm leading-relaxed mb-5">Your personal data — home address, SSN, financial records, email credentials — may already be circulating on dark web marketplaces. Real-time alerts mean you know the moment your information is exposed, so you can act before it's weaponized against you.</p>
+          <ul class="space-y-2 mb-6">
+            <li class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>24/7 dark web & breach database scanning</li>
+            <li class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Real-time alerts (SMS, email, dashboard)</li>
+            <li class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Credential & PII exposure reporting</li>
+            <li class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Remediation guidance & action plan</li>
+            <li class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Quarterly security risk briefing</li>
+          </ul>
+          <div class="pt-4 border-t border-gray-100 flex items-center justify-between">
+            <span class="text-navy font-bold">$500<span class="text-gray-400 text-sm">/mo add-on</span></span>
+            <a href="index.html#contact" class="text-gold text-sm font-semibold hover:underline">Learn more →</a>
+          </div>
+        </div>
+
+        <!-- Data Broker Removal -->
+        <div class="service-card rounded-2xl p-8 reveal reveal-delay-3">
+          <div class="w-12 h-12 rounded-2xl bg-navy/6 flex items-center justify-center mb-5">
+            <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><ellipse cx="13" cy="8" rx="9" ry="4" stroke="#1a3c6e" stroke-width="1.5" fill="none"/><path d="M4 8v5c0 2.2 4 4 9 4s9-1.8 9-4V8" stroke="#1a3c6e" stroke-width="1.5" fill="none"/><path d="M4 13v5c0 2.2 4 4 9 4s9-1.8 9-4v-5" stroke="#1a3c6e" stroke-width="1.5" fill="none"/><path d="M9 10l4 4 4-4" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3 class="text-lg font-bold text-navy mb-2">Data Broker Removal</h3>
+          <p class="text-gray-500 text-sm leading-relaxed mb-5">Over 200 data broker websites publish your home address, phone numbers, relatives, employer history, and estimated net worth without consent. We systematically submit opt-out requests to 50+ sites and monitor for re-listing — permanently reducing your public data footprint.</p>
+          <ul class="space-y-2 mb-6">
+            <li class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Removal from 50+ data broker platforms</li>
+            <li class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Automated opt-out submission system</li>
+            <li class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Re-listing detection & re-removal</li>
+            <li class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Coverage: Spokeo, Whitepages, BeenVerified +47 more</li>
+            <li class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Monthly removal status report</li>
+          </ul>
+          <div class="pt-4 border-t border-gray-100 flex items-center justify-between">
+            <span class="text-navy font-bold">$299<span class="text-gray-400 text-sm">/mo or $2,500 project</span></span>
+            <a href="index.html#contact" class="text-gold text-sm font-semibold hover:underline">Learn more →</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ═══ CONTENT & AUTHORITY SERVICES ═══ -->
+  <section id="content-services" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="mb-12 reveal">
+        <span class="text-gold font-semibold text-sm tracking-widest uppercase">Content & Authority Building</span>
+        <h2 class="text-3xl md:text-4xl font-black text-navy mt-2 mb-3">Own the narrative. Everywhere.</h2>
+        <p class="text-gray-500 max-w-2xl">Content-driven services that build lasting search authority and establish you as the definitive source of truth about yourself and your brand.</p>
+      </div>
+      <div class="grid md:grid-cols-2 gap-8">
+
+        <!-- Wikipedia Management -->
+        <div class="service-card rounded-2xl p-8 reveal reveal-delay-1">
+          <div class="flex items-start gap-5 mb-6">
+            <div class="w-14 h-14 rounded-2xl bg-navy/6 flex items-center justify-center flex-shrink-0">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="11" stroke="#1a3c6e" stroke-width="1.5" fill="none"/><path d="M9 9h10M9 14h7M9 19h5" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-navy mb-1">Wikipedia Management</h3>
+              <span class="text-xs bg-gold/10 text-gold-dark border border-gold/25 rounded-full px-3 py-0.5 font-semibold uppercase tracking-wide">LLM Impact</span>
+            </div>
+          </div>
+          <p class="text-gray-500 leading-relaxed mb-5">Wikipedia ranks on page one for virtually every notable person and company — and AI systems use it as a primary source. A well-maintained Wikipedia article establishes definitive authority, feeds accurate information into ChatGPT and Perplexity, and provides a permanent positive asset that compounds over time.</p>
+          <div class="grid grid-cols-2 gap-2 mb-6">
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Notability assessment & strategy</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Professional article creation</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Citation sourcing & verification</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Neutral point-of-view compliance</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Vandalism monitoring & correction</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Quarterly content review & updates</div>
+          </div>
+          <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+            <span class="text-navy font-bold">From <span class="text-2xl">$3,500</span> setup + $500/mo</span>
+            <a href="index.html#contact" class="btn-gold px-5 py-2 rounded-full text-sm">Get Started</a>
+          </div>
+        </div>
+
+        <!-- SEO Suppression & SERP Domination -->
+        <div class="service-card rounded-2xl p-8 reveal reveal-delay-2">
+          <div class="flex items-start gap-5 mb-6">
+            <div class="w-14 h-14 rounded-2xl bg-navy/6 flex items-center justify-center flex-shrink-0">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="13" cy="13" r="8" stroke="#1a3c6e" stroke-width="1.5" fill="none"/><path d="M19 19l5 5" stroke="#1a3c6e" stroke-width="1.5" stroke-linecap="round"/><path d="M10 10l6 6M16 10l-6 6" stroke="#c9a84c" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-navy mb-1">SEO Suppression & SERP Domination</h3>
+              <span class="text-xs bg-blue-50 text-blue-700 border border-blue-100 rounded-full px-3 py-0.5 font-semibold uppercase tracking-wide">Core Service</span>
+            </div>
+          </div>
+          <p class="text-gray-500 leading-relaxed mb-5">When negative results can't be removed, they can be pushed off page one — and then off page two. Our SEO suppression campaigns deploy AI-generated content across high-authority domains to outrank and bury negative results. We target the first 10 positions on Google with positive, accurate content.</p>
+          <div class="grid grid-cols-2 gap-2 mb-6">
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>30+ SEO articles per month</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>High-authority site publishing</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Targeted keyword suppression</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Authority backlink campaigns</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Monthly SERP ranking report</div>
+            <div class="flex items-center gap-2 text-sm text-gray-600"><svg class="w-4 h-4 text-gold flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>News & press release distribution</div>
+          </div>
+          <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+            <span class="text-navy font-bold">Included in <span class="text-gold">Professional</span> plan</span>
+            <a href="#pricing" class="btn-gold px-5 py-2 rounded-full text-sm">See Plans</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ═══ PRICING ═══ -->
+  <section id="pricing" class="py-24" style="background: #f4f6f9;">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-16 reveal">
+        <span class="text-gold font-semibold text-sm tracking-widest uppercase">Pricing</span>
+        <h2 class="text-4xl md:text-5xl font-black text-navy mt-3 mb-4">Simple, transparent pricing.<br/>No surprises.</h2>
+        <p class="text-gray-500 text-lg max-w-xl mx-auto">All plans include a free 30-minute audit call, onboarding support, and no lock-in contracts. Cancel anytime.</p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6 items-stretch mb-12">
+
+        <!-- Essential -->
+        <div class="bg-white rounded-2xl p-8 flex flex-col shadow-sm reveal reveal-delay-1">
+          <div class="mb-6">
+            <span class="text-xs font-bold tracking-widest uppercase text-gray-400">Essential</span>
+            <div class="mt-3 flex items-end gap-1">
+              <span class="text-5xl font-black text-navy">$1,500</span>
+              <span class="text-gray-400 mb-2">/mo</span>
+            </div>
+            <p class="text-gray-500 text-sm mt-2">For individuals and small businesses starting their reputation journey.</p>
+          </div>
+          <div class="h-px bg-gray-100 mb-6"></div>
+          <div class="flex-1 space-y-3">
+            <p class="text-xs font-bold text-navy/50 uppercase tracking-widest mb-3">Core Includes</p>
+            <div class="flex items-start gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>24/7 Reputation Monitoring & Alerts</div>
+            <div class="flex items-start gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Basic Data Broker Removal (20 sites)</div>
+            <div class="flex items-start gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>2 Social Media Platforms Managed</div>
+            <div class="flex items-start gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>8 AI-Generated Content Pieces/Month</div>
+            <div class="flex items-start gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Monthly Audit & Brand Health Report</div>
+            <div class="flex items-start gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Email Support (48hr response)</div>
+            <div class="flex items-start gap-3 text-sm text-gray-300"><svg class="w-5 h-5 text-gray-200 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Active Removal Campaigns</div>
+            <div class="flex items-start gap-3 text-sm text-gray-300"><svg class="w-5 h-5 text-gray-200 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>SEO Suppression Campaigns</div>
+          </div>
+          <a href="index.html#contact" class="mt-8 block text-center py-3.5 rounded-xl text-sm font-semibold border-2 border-navy/20 text-navy hover:border-navy hover:bg-navy hover:text-white transition-all">Get Started</a>
+        </div>
+
+        <!-- Professional -->
+        <div class="bg-white rounded-2xl p-8 flex flex-col shadow-2xl border-2 border-gold reveal reveal-delay-2 relative" style="transform: scale(1.03);">
+          <div class="absolute -top-4 left-1/2 -translate-x-1/2">
+            <span class="bg-gold text-navy text-xs font-black px-4 py-1.5 rounded-full tracking-widest uppercase">Most Popular</span>
+          </div>
+          <div class="mb-6">
+            <span class="text-xs font-bold tracking-widest uppercase text-gold">Professional</span>
+            <div class="mt-3 flex items-end gap-1">
+              <span class="text-5xl font-black text-navy">$5,000</span>
+              <span class="text-gray-400 mb-2">/mo</span>
+            </div>
+            <p class="text-gray-500 text-sm mt-2">For executives and growing brands ready to dominate their digital presence.</p>
+          </div>
+          <div class="h-px bg-gold/20 mb-6"></div>
+          <div class="flex-1 space-y-3">
+            <p class="text-xs font-bold text-navy/50 uppercase tracking-widest mb-3">Everything in Essential, plus:</p>
+            <div class="flex items-start gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Active Removal Campaigns (40+ brokers)</div>
+            <div class="flex items-start gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>30 AI Content Pieces/Month (SEO-targeted)</div>
+            <div class="flex items-start gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>SEO Suppression Campaigns (active)</div>
+            <div class="flex items-start gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Full Social Media Management (4 platforms)</div>
+            <div class="flex items-start gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Executive Digital Presence Optimization</div>
+            <div class="flex items-start gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Monthly Strategy Call (60 min)</div>
+            <div class="flex items-start gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Priority Support + Dedicated Slack Channel</div>
+            <div class="flex items-start gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>LLM Hallucination Monitoring (basic)</div>
+          </div>
+          <a href="index.html#contact" class="mt-8 block text-center btn-gold py-3.5 rounded-xl text-sm">Get Started</a>
+        </div>
+
+        <!-- Enterprise -->
+        <div class="bg-white rounded-2xl p-8 flex flex-col shadow-sm reveal reveal-delay-3">
+          <div class="mb-6">
+            <span class="text-xs font-bold tracking-widest uppercase text-gray-400">Enterprise</span>
+            <div class="mt-3 flex items-end gap-1">
+              <span class="text-5xl font-black text-navy">$15,000</span>
+              <span class="text-gray-400 mb-2">/mo</span>
+            </div>
+            <p class="text-gray-500 text-sm mt-2">White-glove service for public figures, corporations, and high-stakes brands.</p>
+          </div>
+          <div class="h-px bg-gray-100 mb-6"></div>
+          <div class="flex-1 space-y-3">
+            <p class="text-xs font-bold text-navy/50 uppercase tracking-widest mb-3">Everything in Professional, plus:</p>
+            <div class="flex items-start gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Legal C&D Support & DMCA Escalation</div>
+            <div class="flex items-start gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Crisis Response Team (24/7 activation)</div>
+            <div class="flex items-start gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Full LLM Hallucination Defense Suite</div>
+            <div class="flex items-start gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Dark Web Monitoring (included)</div>
+            <div class="flex items-start gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Wikipedia Management (setup + maintenance)</div>
+            <div class="flex items-start gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Dedicated Account Executive</div>
+            <div class="flex items-start gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Unlimited Platforms & Custom Integrations</div>
+            <div class="flex items-start gap-3 text-sm text-gray-600"><svg class="w-5 h-5 text-gold flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Quarterly Board/Investor Reporting</div>
+          </div>
+          <a href="index.html#contact" class="mt-8 block text-center py-3.5 rounded-xl text-sm font-semibold border-2 border-navy/20 text-navy hover:border-navy hover:bg-navy hover:text-white transition-all">Contact Sales</a>
+        </div>
+
+      </div>
+
+      <!-- Add-on services -->
+      <div class="bg-white rounded-2xl p-8 reveal">
+        <h3 class="font-bold text-xl text-navy mb-6">Add-On Services</h3>
+        <div class="grid md:grid-cols-4 gap-4">
+          <div class="bg-light-gray rounded-xl p-4">
+            <div class="font-bold text-sm text-navy mb-1">LLM Hallucination Defense</div>
+            <div class="text-gold font-bold text-lg mb-1">$1,500<span class="text-gray-400 text-xs">/mo</span></div>
+            <p class="text-xs text-gray-500">Full AI output monitoring + source correction</p>
+          </div>
+          <div class="bg-light-gray rounded-xl p-4">
+            <div class="font-bold text-sm text-navy mb-1">Dark Web Monitoring</div>
+            <div class="text-gold font-bold text-lg mb-1">$500<span class="text-gray-400 text-xs">/mo</span></div>
+            <p class="text-xs text-gray-500">Real-time breach alerts + remediation guidance</p>
+          </div>
+          <div class="bg-light-gray rounded-xl p-4">
+            <div class="font-bold text-sm text-navy mb-1">Wikipedia Management</div>
+            <div class="text-gold font-bold text-lg mb-1">$3,500<span class="text-gray-400 text-xs"> setup</span></div>
+            <p class="text-xs text-gray-500">Article creation + $500/mo maintenance</p>
+          </div>
+          <div class="bg-light-gray rounded-xl p-4">
+            <div class="font-bold text-sm text-navy mb-1">Crisis PR Retainer</div>
+            <div class="text-gold font-bold text-lg mb-1">$5,000<span class="text-gray-400 text-xs"> retainer</span></div>
+            <p class="text-xs text-gray-500">24/7 activation ready; deploy when needed</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ═══ HOW WE WORK ═══ -->
+  <section id="process" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-16 reveal">
+        <span class="text-gold font-semibold text-sm tracking-widest uppercase">How We Work</span>
+        <h2 class="text-3xl md:text-4xl font-black text-navy mt-2 mb-4">From audit to results in 5 steps.</h2>
+        <p class="text-gray-500 max-w-xl mx-auto">Our structured onboarding process means you start seeing results within the first 30 days — not months of planning with nothing to show for it.</p>
+      </div>
+      <div class="grid md:grid-cols-5 gap-4">
+        <div class="text-center reveal reveal-delay-1">
+          <div class="w-16 h-16 rounded-2xl bg-navy flex items-center justify-center mx-auto mb-4">
+            <span class="text-gold font-black text-2xl">01</span>
+          </div>
+          <h4 class="font-bold text-navy mb-2">Free Audit</h4>
+          <p class="text-xs text-gray-500 leading-relaxed">We analyze your current digital footprint — Google results, social presence, data broker exposure, and AI outputs. You get a clear picture of where you stand.</p>
+        </div>
+        <div class="text-center reveal reveal-delay-2">
+          <div class="w-16 h-16 rounded-2xl bg-gold flex items-center justify-center mx-auto mb-4">
+            <span class="text-navy font-black text-2xl">02</span>
+          </div>
+          <h4 class="font-bold text-navy mb-2">Strategy Call</h4>
+          <p class="text-xs text-gray-500 leading-relaxed">A 60-minute session with your account lead to map priorities, set goals, and build a 90-day action plan tailored to your situation and budget.</p>
+        </div>
+        <div class="text-center reveal reveal-delay-3">
+          <div class="w-16 h-16 rounded-2xl bg-navy flex items-center justify-center mx-auto mb-4">
+            <span class="text-gold font-black text-2xl">03</span>
+          </div>
+          <h4 class="font-bold text-navy mb-2">Onboarding</h4>
+          <p class="text-xs text-gray-500 leading-relaxed">Your account is set up within 48 hours. AI monitoring activates, removal campaigns begin, and content strategy is finalized — all before your first billing date.</p>
+        </div>
+        <div class="text-center reveal">
+          <div class="w-16 h-16 rounded-2xl bg-gold flex items-center justify-center mx-auto mb-4">
+            <span class="text-navy font-black text-2xl">04</span>
+          </div>
+          <h4 class="font-bold text-navy mb-2">Execution</h4>
+          <p class="text-xs text-gray-500 leading-relaxed">Our AI engine and human team work continuously — publishing content, submitting removals, monitoring threats, and optimizing your search presence every single day.</p>
+        </div>
+        <div class="text-center reveal">
+          <div class="w-16 h-16 rounded-2xl bg-navy flex items-center justify-center mx-auto mb-4">
+            <span class="text-gold font-black text-2xl">05</span>
+          </div>
+          <h4 class="font-bold text-navy mb-2">Monthly Reports</h4>
+          <p class="text-xs text-gray-500 leading-relaxed">Detailed monthly reports show SERP ranking changes, content published, removals processed, and your brand health score. Complete transparency, always.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ═══ FAQs ═══ -->
+  <section id="faq" class="py-20" style="background: #f4f6f9;">
+    <div class="max-w-4xl mx-auto px-6">
+      <div class="text-center mb-16 reveal">
+        <span class="text-gold font-semibold text-sm tracking-widest uppercase">FAQs</span>
+        <h2 class="text-3xl md:text-4xl font-black text-navy mt-2 mb-4">Common questions, honest answers.</h2>
+      </div>
+      <div class="space-y-4 reveal">
+
+        <div class="faq-item bg-white rounded-2xl overflow-hidden">
+          <details>
+            <summary class="flex items-center justify-between p-6 cursor-pointer">
+              <span class="font-semibold text-navy">How long does content removal actually take?</span>
+              <span class="faq-icon text-gold text-2xl font-light flex-shrink-0 ml-4">+</span>
+            </summary>
+            <div class="px-6 pb-6">
+              <p class="text-gray-500 leading-relaxed text-sm">It depends on the platform and content type. Google delisting requests typically take 2–6 weeks. DMCA takedowns on hosting platforms: 1–2 weeks. Direct platform removals vary widely — some within days, others requiring escalation. Data broker opt-outs: 30–90 days. We track every request and provide status updates. Our overall success rate on actionable content exceeds 90%.</p>
+            </div>
+          </details>
+        </div>
+
+        <div class="faq-item bg-white rounded-2xl overflow-hidden">
+          <details>
+            <summary class="flex items-center justify-between p-6 cursor-pointer">
+              <span class="font-semibold text-navy">Can you remove content from news websites and Reddit?</span>
+              <span class="faq-icon text-gold text-2xl font-light flex-shrink-0 ml-4">+</span>
+            </summary>
+            <div class="px-6 pb-6">
+              <p class="text-gray-500 leading-relaxed text-sm">Sometimes directly, always indirectly. Direct removal from news sites requires valid legal grounds (defamation, privacy violations, factual errors) or a willing publisher. Reddit removals require content policy violations. When direct removal isn't possible, we use our SEO suppression system to push the content below page two of Google — effectively making it invisible to 99% of searchers.</p>
+            </div>
+          </details>
+        </div>
+
+        <div class="faq-item bg-white rounded-2xl overflow-hidden">
+          <details>
+            <summary class="flex items-center justify-between p-6 cursor-pointer">
+              <span class="font-semibold text-navy">What is LLM Hallucination Defense and why does it matter?</span>
+              <span class="faq-icon text-gold text-2xl font-light flex-shrink-0 ml-4">+</span>
+            </summary>
+            <div class="px-6 pb-6">
+              <p class="text-gray-500 leading-relaxed text-sm">AI systems like ChatGPT, Perplexity, and Google AI Overviews synthesize information from their training data to answer questions. When that training data includes inaccurate, outdated, or defamatory content about you, the AI repeats it as fact — to millions of users daily. Our LLM Defense service monitors AI outputs for false information, then deploys authoritative source content and structured data to correct the record and prevent future hallucinations.</p>
+            </div>
+          </details>
+        </div>
+
+        <div class="faq-item bg-white rounded-2xl overflow-hidden">
+          <details>
+            <summary class="flex items-center justify-between p-6 cursor-pointer">
+              <span class="font-semibold text-navy">Are there any lock-in contracts?</span>
+              <span class="faq-icon text-gold text-2xl font-light flex-shrink-0 ml-4">+</span>
+            </summary>
+            <div class="px-6 pb-6">
+              <p class="text-gray-500 leading-relaxed text-sm">No. All monthly plans are month-to-month. You can upgrade, downgrade, or cancel at any time with 30 days notice. We believe our results speak for themselves — we don't need contracts to keep clients. Project-based services (Pre-IPO cleanup, Wikipedia creation) have defined scopes with agreed timelines but no ongoing obligation.</p>
+            </div>
+          </details>
+        </div>
+
+        <div class="faq-item bg-white rounded-2xl overflow-hidden">
+          <details>
+            <summary class="flex items-center justify-between p-6 cursor-pointer">
+              <span class="font-semibold text-navy">Is this service appropriate for public companies?</span>
+              <span class="faq-icon text-gold text-2xl font-light flex-shrink-0 ml-4">+</span>
+            </summary>
+            <div class="px-6 pb-6">
+              <p class="text-gray-500 leading-relaxed text-sm">Yes, and we specialize in it. Our team understands SEC disclosure requirements, Reg FD compliance, IR communication norms, and the specific reputation dynamics of publicly traded companies — including short-seller attack campaigns, analyst perception management, and investor-facing narrative alignment. This is one of our key differentiators from generalist ORM agencies.</p>
+            </div>
+          </details>
+        </div>
+
+        <div class="faq-item bg-white rounded-2xl overflow-hidden">
+          <details>
+            <summary class="flex items-center justify-between p-6 cursor-pointer">
+              <span class="font-semibold text-navy">What's the difference between the Essential and Professional plans?</span>
+              <span class="faq-icon text-gold text-2xl font-light flex-shrink-0 ml-4">+</span>
+            </summary>
+            <div class="px-6 pb-6">
+              <p class="text-gray-500 leading-relaxed text-sm">The Essential plan covers monitoring, light content production, and basic data broker removal — it's a strong foundation. Professional activates active removal campaigns (targeting 40+ brokers and requesting delisting), scales content production to 30 pieces/month for SEO suppression, manages 4 social platforms, and includes a dedicated Slack channel and monthly strategy call. Most clients with an active reputation problem need Professional or higher.</p>
+            </div>
+          </details>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CTA ═══ -->
+  <section class="hero-gradient py-24 relative overflow-hidden">
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+      <svg width="100%" height="100%" viewBox="0 0 1440 400" preserveAspectRatio="xMidYMid slice" fill="none">
+        <circle cx="1300" cy="200" r="250" stroke="rgba(201,168,76,0.06)" stroke-width="1" fill="none"/>
+        <line x1="0" y1="400" x2="400" y2="0" stroke="rgba(201,168,76,0.04)" stroke-width="1"/>
+      </svg>
+    </div>
+    <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+      <h2 class="text-4xl md:text-5xl font-black text-white mb-6">Ready to engineer your story?</h2>
+      <p class="text-white/65 text-lg mb-10 max-w-2xl mx-auto">Start with a free 30-minute audit. No commitment, no credit card. We'll show you exactly where you stand and what it takes to own your narrative.</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="index.html#contact" class="btn-gold px-10 py-4 rounded-full text-base inline-block">Start My Free Audit →</a>
+        <a href="index.html#pricing" class="btn-outline px-10 py-4 rounded-full text-base inline-block">View Plans</a>
+      </div>
+      <p class="text-white/30 text-sm mt-8">No contracts · Cancel anytime · Results guaranteed or we work for free until you see them</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="hero-gradient py-12">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid md:grid-cols-4 gap-8 mb-10">
+        <div class="md:col-span-2">
+          <a href="index.html" class="flex items-center gap-2 mb-4">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+              <rect width="32" height="32" rx="8" fill="#c9a84c"/>
+              <text x="16" y="22" text-anchor="middle" font-family="Inter" font-weight="900" font-size="14" fill="#0f2444">N</text>
+            </svg>
+            <span class="text-white font-bold text-xl tracking-tight">NarrativeOS<span style="color:#c9a84c;">™</span></span>
+          </a>
+          <p class="text-white/50 text-sm leading-relaxed max-w-xs">AI-powered online reputation management for executives, public companies, and brands who refuse to let others control their story.</p>
+          <p class="text-gold text-sm font-semibold mt-4 italic">Your Story. Engineered.</p>
+        </div>
+        <div>
+          <h4 class="text-white font-semibold text-sm mb-4 uppercase tracking-widest">Services</h4>
+          <ul class="space-y-2">
+            <li><a href="#core-services" class="text-white/50 text-sm hover:text-white transition-colors">Remove → Build → Protect</a></li>
+            <li><a href="#executive-services" class="text-white/50 text-sm hover:text-white transition-colors">Executive Presence</a></li>
+            <li><a href="#executive-services" class="text-white/50 text-sm hover:text-white transition-colors">Pre-IPO Cleanup</a></li>
+            <li><a href="#protection-services" class="text-white/50 text-sm hover:text-white transition-colors">LLM Defense</a></li>
+            <li><a href="#protection-services" class="text-white/50 text-sm hover:text-white transition-colors">Data Broker Removal</a></li>
+            <li><a href="#content-services" class="text-white/50 text-sm hover:text-white transition-colors">Wikipedia Management</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-white font-semibold text-sm mb-4 uppercase tracking-widest">Company</h4>
+          <ul class="space-y-2">
+            <li><a href="index.html" class="text-white/50 text-sm hover:text-white transition-colors">Home</a></li>
+            <li><a href="#pricing" class="text-white/50 text-sm hover:text-white transition-colors">Pricing</a></li>
+            <li><a href="#process" class="text-white/50 text-sm hover:text-white transition-colors">How It Works</a></li>
+            <li><a href="index.html#contact" class="text-white/50 text-sm hover:text-white transition-colors">Free Audit</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-white/10 pt-8">
+        <p class="text-white/30 text-xs text-center">© 2025 NarrativeOS™. All rights reserved. Built with AI. Powered by strategy.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Nav scroll effect
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Mobile menu
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    menuToggle.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+
+    // Reveal on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
